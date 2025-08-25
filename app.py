@@ -9,6 +9,15 @@ from pydantic import BaseModel
 import io
 import pickle
 import uvicorn
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # --------------------
 # 1. Load Image Model
@@ -84,6 +93,12 @@ app = FastAPI(title="AGE PREDIX - Unified Age Prediction API", version="1.0.0")
 class TextInput(BaseModel):
     text: str
 
+class ContactForm(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
+
 # --------------------
 # 4. Serve Static Files and HTML
 # --------------------
@@ -96,6 +111,25 @@ async def serve_homepage():
         return HTMLResponse(content=html_content)
     except FileNotFoundError:
         return HTMLResponse(content="<h1>AGE PREDIX API</h1><p>Frontend not found. API is running at /docs</p>")
+
+@app.get("/favicon.png")
+async def get_favicon():
+    """Serve the favicon"""
+    try:
+        with open("favicon.png", "rb") as f:
+            png_content = f.read()
+        from fastapi.responses import Response
+        return Response(
+            content=png_content, 
+            media_type="image/png",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Favicon not found")
 
 # --------------------
 # 5. API Endpoints
@@ -181,6 +215,66 @@ async def predict_text_age(input_data: TextInput):
 async def predict_legacy(file: UploadFile = File(...)):
     """Legacy image prediction endpoint for backward compatibility"""
     return await predict_image_age(file)
+
+@app.post("/contact")
+async def send_contact_email(contact_data: ContactForm):
+    """
+    Send contact form email
+    """
+    try:
+        # Email configuration - you'll need to set these environment variables
+        smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+        smtp_port = int(os.getenv("SMTP_PORT", "587"))
+        sender_email = os.getenv("SENDER_EMAIL", "your-email@gmail.com")
+        sender_password = os.getenv("SENDER_PASSWORD", "your-app-password")
+        recipient_email = os.getenv("RECIPIENT_EMAIL", "your-email@gmail.com")
+        
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = recipient_email
+        msg['Subject'] = f"AGE PREDIX Contact Form: {contact_data.subject}"
+        
+        # Email body
+        body = f"""
+New contact form submission from AGE PREDIX website:
+
+Name: {contact_data.name}
+Email: {contact_data.email}
+Subject: {contact_data.subject}
+
+Message:
+{contact_data.message}
+
+---
+Sent on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+From: AGE PREDIX Contact Form
+        """
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        # Send email
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, recipient_email, text)
+        server.quit()
+        
+        return JSONResponse(content={
+            "success": True,
+            "message": "Email sent successfully!"
+        })
+        
+    except Exception as e:
+        print(f"Email error: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "message": "Failed to send email. Please try again later."
+            }
+        )
 
 # --------------------
 # 6. Run Application

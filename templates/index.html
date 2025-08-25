@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGE PREDIX - Age Prediction Technology</title>
+    <title>AGE PREDIX </title>
+    <link rel="icon" type="image/png" href="/favicon.png?v=2">
+    <link rel="shortcut icon" href="/favicon.png?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Updated to use Inter font for body text for a more professional feel -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1030,6 +1032,287 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
         }
+
+        /* Mobile Media Queries */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            /* Header Mobile Styles */
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 0;
+                position: relative;
+            }
+
+            .logo-container {
+                justify-content: center;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+            }
+
+            .logo i {
+                font-size: 24px;
+            }
+
+            .brand-name {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            /* Hero Section Mobile */
+            .hero h1 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            .hero p {
+                font-size: 16px;
+                padding: 0 10px;
+            }
+
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+
+            /* Analysis Options Mobile */
+            #analysis-options {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .analysis-card {
+                width: 100%;
+                max-width: 300px;
+                padding: 25px;
+            }
+
+            .analysis-card .icon {
+                font-size: 50px;
+            }
+
+            .analysis-card h3 {
+                font-size: 20px;
+            }
+
+            /* Demo Section Mobile */
+            .analysis-ui {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .upload-container, .results-container, .text-input-container {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            /* Upload Area Mobile */
+            .upload-area {
+                padding: 30px 15px;
+            }
+
+            .upload-icon {
+                font-size: 40px;
+            }
+
+            .upload-text {
+                font-size: 14px;
+            }
+
+            .upload-btn, .webcam-btn, .crop-btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+
+            /* Results Mobile */
+            .age-result {
+                font-size: 48px;
+            }
+
+            .confidence {
+                font-size: 16px;
+            }
+
+            .image-preview {
+                max-height: 200px;
+            }
+
+            /* Text Input Mobile */
+            .text-input-container textarea {
+                height: 200px;
+                font-size: 14px;
+            }
+
+            /* Features Grid Mobile */
+            .features-title {
+                font-size: 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .feature-detail-card, .feature-card {
+                padding: 20px;
+            }
+
+            .feature-detail-card h3, .feature-title {
+                font-size: 18px;
+            }
+
+            /* Cropping Modal Mobile */
+            .crop-modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
+            }
+
+            .crop-header h2 {
+                font-size: 20px;
+            }
+
+            .crop-container {
+                max-height: 300px;
+            }
+
+            .crop-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .crop-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Contact Modal Mobile */
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 25px;
+            }
+
+            .modal-header h2 {
+                font-size: 22px;
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                font-size: 14px;
+            }
+
+            /* Footer Mobile */
+            .footer {
+                padding: 30px 0;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            /* Dropdown Mobile */
+            .dropdown-content {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 80%;
+                max-width: 250px;
+            }
+
+            /* Message Box Mobile */
+            .message-box {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .analysis-card {
+                padding: 20px;
+            }
+
+            .analysis-card .icon {
+                font-size: 40px;
+            }
+
+            .analysis-card h3 {
+                font-size: 18px;
+            }
+
+            .upload-container, .results-container, .text-input-container {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .age-result {
+                font-size: 36px;
+            }
+
+            .crop-modal-content, .modal-content {
+                padding: 15px;
+            }
+
+            .features-title {
+                font-size: 20px;
+            }
+
+            .brand-name {
+                font-size: 20px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo i {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1282,13 +1565,13 @@
         </section>
 
         <footer class="footer">
-            <div class="footer-links">
+            <!-- <div class="footer-links">
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
                 <a href="#">API Documentation</a>
                 <a href="#">Contact Us</a>
-            </div>
-            <p>© 2023 AGE PREDIX | Advanced Facial Analysis Technology</p>
+            </div> -->
+            <p>© 2026 AGE PREDIX | Age Prediction Technology</p>
         </footer>
     </div>
 
@@ -1397,22 +1680,54 @@
                 }
             });
             
-            contactForm.addEventListener('submit', (e) => {
+            contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                // In a real application, you would send this data to a server
-                console.log('Form Submitted!');
-                console.log('Name:', contactName.value);
-                console.log('Email:', contactEmail.value);
-                console.log('Subject:', contactSubject.value);
-                console.log('Message:', contactMessage.value);
                 
-                showMessage("Thank you for your message! We'll be in touch shortly.");
-                contactForm.reset();
-                contactModal.classList.remove('show');
-                setTimeout(() => {
-                    contactModal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }, 300);
+                // Get form data
+                const formData = {
+                    name: contactName.value,
+                    email: contactEmail.value,
+                    subject: contactSubject.value,
+                    message: contactMessage.value
+                };
+                
+                // Disable submit button and show loading state
+                const submitBtn = contactForm.querySelector('.send-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'SENDING...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Send email via API
+                    const response = await fetch('/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok && result.success) {
+                        showMessage("Thank you for your message! We'll be in touch shortly.");
+                        contactForm.reset();
+                        contactModal.classList.remove('show');
+                        setTimeout(() => {
+                            contactModal.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }, 300);
+                    } else {
+                        showMessage(result.message || "Failed to send message. Please try again.", 5000);
+                    }
+                } catch (error) {
+                    console.error('Error sending email:', error);
+                    showMessage("Failed to send message. Please check your connection and try again.", 5000);
+                } finally {
+                    // Reset button state
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
             });
 
 
