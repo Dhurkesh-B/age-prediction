@@ -590,6 +590,14 @@
             gap: 30px;
         }
         
+        /* Center alignment for 2-card grids */
+        .features-grid:has(.feature-detail-card:nth-child(2):last-child) {
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
         .feature-detail-card {
             background: var(--card-bg);
             border-radius: 15px;
@@ -1494,44 +1502,19 @@
             </div>
         </section>
 
-        <!-- New section for Services & Features -->
-        <section class="features-section" id="services-features-section">
-            <h2 class="features-title">Services & Features</h2>
-            <div class="features-grid">
-                <div class="feature-detail-card animated delay-1">
-                    <div class="feature-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3 class="feature-title">API Integration</h3>
-                    <p class="feature-desc">
-                        Easily integrate our powerful age prediction API into your existing applications, websites, or software. Our well-documented API and developer-friendly tools ensure a seamless and quick setup process.
-                    </p>
-                </div>
-                <div class="feature-detail-card animated delay-2">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Non-Intrusive Verification</h3>
-                    <p class="feature-desc">
-                        Prioritize user privacy with our non-intrusive age verification method. We analyze facial features without collecting or storing personally identifiable information, providing a secure and anonymous experience for your users.
-                    </p>
-                </div>
-                <div class="feature-detail-card animated delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-ban"></i>
-                    </div>
-                    <h3 class="feature-title">Age-Gating for Content</h3>
-                    <p class="feature-desc">
-                        Ensure regulatory compliance by implementing age-gating for content or services. Our technology provides accurate age estimates, helping you restrict access to age-sensitive materials and protect your audience.
-                    </p>
-                </div>
-            </div>
-        </section>
 
 
         <!-- New and detailed 'How It Works' section -->
         <section class="features-section" id="how-it-works">
             <h2 class="features-title">How It Works</h2>
+            <!-- <p style="text-align: center; color: var(--text-light); margin-bottom: 40px; font-size: 18px;">
+                Our platform offers two powerful analysis methods to predict age with remarkable accuracy
+            </p> -->
+            
+            <!-- Image Analysis Process -->
+            <h3 style="text-align: center; color: var(--primary); margin: 40px 0 30px 0; font-size: 24px; font-weight: 600;">
+                <i class="fas fa-camera" style="margin-right: 10px;"></i>Image Analysis Process
+            </h3>
             <div class="features-grid">
                 <!-- Step 1: Image Upload -->
                 <div class="feature-detail-card animated delay-1">
@@ -1566,7 +1549,72 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Text Analysis Process -->
+            <h3 style="text-align: center; color: var(--primary); margin: 50px 0 30px 0; font-size: 24px; font-weight: 600;">
+                <i class="fas fa-file-alt" style="margin-right: 10px;"></i>Text Analysis Process
+            </h3>
+            <div class="features-grid">
+                <!-- Step 1: Text Input -->
+                <div class="feature-detail-card animated delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="feature-title">Step 1: Input Your Text</h3>
+                    <p class="feature-desc">
+                        Enter text directly into our analysis field or upload a text file from your computer. Our system works best with at least 50 characters of natural writing, such as social media posts, emails, or any written content that reflects your communication style.
+                    </p>
+                </div>
+
+                <!-- Step 2: Linguistic Pattern Analysis -->
+                <div class="feature-detail-card animated delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">Step 2: Linguistic Pattern Analysis</h3>
+                    <p class="feature-desc">
+                        Our sophisticated natural language processing algorithms analyze your writing style, vocabulary complexity, sentence structure, punctuation patterns, and generational language markers. These linguistic fingerprints reveal age-related communication patterns unique to different age groups.
+                    </p>
+                </div>
+
+                <!-- Step 3: Age Prediction Results -->
+                <div class="feature-detail-card animated delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Step 3: Age Prediction Results</h3>
+                    <p class="feature-desc">
+                        Receive an accurate age prediction based on your text's linguistic characteristics. The results include a confidence score and insights into the key language patterns that influenced the prediction, helping you understand how writing style correlates with age demographics.
+                    </p>
+                </div>
+            </div>
         </section>
+
+                <!-- New section for Services & Features -->
+                <section class="features-section" id="services-features-section">
+                    <h2 class="features-title">Services & Features</h2>
+                    <div class="features-grid">
+                        <div class="feature-detail-card animated delay-2">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="feature-title">Non-Intrusive Verification</h3>
+                            <p class="feature-desc">
+                                Prioritize user privacy with our non-intrusive age verification method. We analyze facial features without collecting or storing personally identifiable information, providing a secure and anonymous experience for your users.
+                            </p>
+                        </div>
+                        <div class="feature-detail-card animated delay-3">
+                            <div class="feature-icon">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <h3 class="feature-title">Age-Gating for Content</h3>
+                            <p class="feature-desc">
+                                Ensure regulatory compliance by implementing age-gating for content or services. Our technology provides accurate age estimates, helping you restrict access to age-sensitive materials and protect your audience.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+        
 
         <footer class="footer">
             <!-- <div class="footer-links">
