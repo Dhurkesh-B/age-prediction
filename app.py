@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchvision import transforms
+from torchvision import transforms, models
 from PIL import Image
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse, HTMLResponse
@@ -65,6 +65,40 @@ transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+])
+
+# --------------------
+# 1.5. Load Gender Model
+# --------------------
+# Load the trained gender model
+try:
+    # Initialize ResNet18 model with 2 classes (male, female)
+    gender_model = models.resnet18(pretrained=False)
+    num_ftrs = gender_model.fc.in_features
+    gender_model.fc = nn.Linear(num_ftrs, 2)  # 2 classes: male, female
+    
+    # Load the trained weights
+    gender_model.load_state_dict(torch.load("gender_model.pth", map_location=device))
+    gender_model.to(device)
+    gender_model.eval()
+    
+    print("Gender model loaded successfully")
+    gender_model_available = True
+except FileNotFoundError:
+    print("Gender model file 'gender_model.pth' not found")
+    gender_model_available = False
+except Exception as e:
+    print(f"Error loading gender model: {e}")
+    gender_model_available = False
+
+# Class names for gender prediction
+gender_class_names = ['female', 'male']  # Alphabetical order as used in ImageFolder
+
+# Gender preprocessing (same as age preprocessing)
+gender_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 # --------------------
@@ -140,13 +174,14 @@ async def health_check():
     return {
         "status": "healthy",
         "image_model_classes": num_classes,
-        "text_model_available": text_model_available
+        "text_model_available": text_model_available,
+        "gender_model_available": gender_model_available
     }
 
 @app.post("/predict/image")
 async def predict_image_age(file: UploadFile = File(...)):
     """
-    Predict age from uploaded image
+    Predict age and gender from uploaded image
     """
     try:
         # Validate file type
@@ -156,9 +191,9 @@ async def predict_image_age(file: UploadFile = File(...)):
         # Read and process image
         contents = await file.read()
         img = Image.open(io.BytesIO(contents)).convert("RGB")
+        
+        # Age prediction
         img_tensor = transform(img).unsqueeze(0).to(device)
-
-        # Model prediction
         with torch.no_grad():
             outputs = image_model(img_tensor)
             _, predicted = torch.max(outputs, 1)
@@ -167,12 +202,39 @@ async def predict_image_age(file: UploadFile = File(...)):
 
         # Map back to age group
         pred_age_group = class2age[pred_class]
+        
+        # Gender prediction
+        gender_result = None
+        if gender_model_available:
+            try:
+                gender_img_tensor = gender_transform(img).unsqueeze(0).to(device)
+                with torch.no_grad():
+                    gender_outputs = gender_model(gender_img_tensor)
+                    gender_probabilities = torch.nn.functional.softmax(gender_outputs[0], dim=0)
+                    _, gender_predicted = torch.max(gender_outputs, 1)
+                    gender_pred_class = gender_predicted.item()
+                    gender_confidence = gender_probabilities[gender_pred_class].item()
+                
+                predicted_gender = gender_class_names[gender_pred_class]
+                
+                gender_result = {
+                    "predicted_gender": predicted_gender,
+                    "confidence": gender_confidence,
+                    "probabilities": {
+                        "female": gender_probabilities[0].item(),
+                        "male": gender_probabilities[1].item()
+                    }
+                }
+            except Exception as e:
+                print(f"Gender prediction error: {e}")
+                gender_result = {"error": "Gender prediction failed"}
 
         return JSONResponse(content={
             "predicted_age_group": pred_age_group,
             "predicted_class": pred_class,
             "confidence": confidence,
-            "type": "image"
+            "type": "image",
+            "gender": gender_result
         })
 
     except Exception as e:

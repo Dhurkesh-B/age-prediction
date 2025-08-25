@@ -476,7 +476,7 @@
             height: auto;
             max-height: 250px;
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin: 0 auto 20px auto;
             display: none;
             object-fit: contain;
         }
@@ -1474,17 +1474,21 @@
                     <button class="back-btn" id="textBackBtn"><i class="fas fa-arrow-left"></i> Back to Options</button>
                     <h2 class="section-title"><i class="fas fa-file-alt"></i> Enter Text for Analysis</h2>
                     <p class="upload-text">Enter text or browse a file below.</p>
-                    <textarea id="textInput" placeholder="Paste your text here..."></textarea>
-                    <div class="input-controls" style="margin-top: 15px;">
-                        <input type="file" id="textFileInput" accept=".txt,.doc,.docx,.pdf" style="display: none;">
-                        <button class="upload-btn" id="browseTextBtn">BROWSE TEXT FILES</button>
-                        <button class="cta-button" id="analyzeTextBtn">ANALYZE TEXT</button>
+                    <textarea id="textInput" placeholder="Enter your text here... (minimum 50 characters for better accuracy)"></textarea>
+                    <div class="input-controls" style="margin-top: 20px;">
+                        <button id="analyzeTextBtn" class="upload-btn">
+                            <i class="fas fa-search"></i> Analyze Text
+                        </button>
+                        <button id="browseTextBtn" class="upload-btn" style="background: white; color: var(--primary); border: 1px solid var(--primary);">
+                            <i class="fas fa-file-upload"></i> Browse Text File
+                        </button>
                     </div>
+                    <input type="file" id="textFileInput" accept=".txt,.doc,.docx" style="display: none;">
                 </div>
                 <div class="results-container animated">
                     <h2 class="section-title"><i class="fas fa-chart-line"></i> Analysis Results</h2>
-                    <div class="results-display" id="textResultsDisplay">
-                        <!-- Content will be generated dynamically here -->
+                    <div id="textResultsDisplay" class="results-display">
+                        <p class="upload-text">Upload text to see age prediction results here.</p>
                     </div>
                 </div>
             </div>
@@ -1845,7 +1849,21 @@
             }
 
             // Function to render the results dynamically
-            function renderResults(imageDataURL, age, confidence, features, container) {
+            function renderResults(imageDataURL, age, confidence, features, container, gender = null) {
+                const genderDisplay = gender ? `
+                    <div style="margin: 20px 0; padding: 15px; background: var(--primary-light); border-radius: 10px;">
+                        <p class="confidence" style="margin-bottom: 10px;">Predicted Gender</p>
+                        <div style="font-size: 36px; font-weight: 700; color: var(--primary); margin-bottom: 10px;">
+                            ${gender.predicted_gender.toUpperCase()}
+                        </div>
+                        <p class="confidence">Confidence: ${Math.round(gender.confidence * 100)}%</p>
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px;">
+                            <span>Female: ${Math.round(gender.probabilities.female * 100)}%</span>
+                            <span>Male: ${Math.round(gender.probabilities.male * 100)}%</span>
+                        </div>
+                    </div>
+                ` : '';
+
                 container.innerHTML = `
                     <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded or captured image preview" style="display: block;">
                     <p class="confidence">Predicted Age</p>
@@ -1854,6 +1872,7 @@
                     <div class="age-bar">
                         <div class="age-fill" style="width: 0%;" id="animatedAgeFill"></div>
                     </div>
+                    ${genderDisplay}
                     <div class="features-analysis">
                         ${features.map(f => `
                             <div class="feature-item">
@@ -2095,7 +2114,10 @@
                         { name: "Feature Spacing", value: Math.floor(Math.random() * 10) + 85 }
                     ];
                     
-                    renderResults(imageDataURL, result.predicted_age_group, confidence, features, resultsDisplay);
+                    // Extract gender information if available
+                    const genderInfo = result.gender && !result.gender.error ? result.gender : null;
+                    
+                    renderResults(imageDataURL, result.predicted_age_group, confidence, features, resultsDisplay, genderInfo);
                     
                     // Add pulse animation to the final result
                     const ageResultElement = resultsDisplay.querySelector('.age-result');
