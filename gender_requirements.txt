@@ -1,0 +1,8 @@
+# Gender Prediction API Dependencies
+fastapi==0.116.1
+uvicorn==0.35.0
+python-multipart==0.0.20
+torch==2.8.0
+torchvision==0.23.0
+pillow==11.3.0
+pydantic==2.11.7

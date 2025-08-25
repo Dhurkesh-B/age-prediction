@@ -116,7 +116,7 @@ async def serve_homepage():
 async def get_favicon():
     """Serve the favicon"""
     try:
-        with open("favicon.png", "rb") as f:
+        with open("templates/favicon.png", "rb") as f:
             png_content = f.read()
         from fastapi.responses import Response
         return Response(
