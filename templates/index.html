@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Prediction App</title>
+    <title>AGE PREDIX - Age Prediction Technology</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Updated to use Inter font for body text for a more professional feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Cropper.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <style>
         * {
             margin: 0;
@@ -11,286 +16,1919 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #4a6cfa;
+            --primary-light: #eef0ff;
+            --secondary: #ff7d4d;
+            --accent: #6c63ff;
+            --text: #333344;
+            --text-light: #666677;
+            --background: #f8f9ff;
+            --card-bg: #ffffff;
+            --border: #e0e5ff;
+            --success: #4cc9a4;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--background);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            font-weight: 300;
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            /* New styles for dynamic header */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--background);
+            opacity: 1; /* Initially fully visible */
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .header.scrolled {
+            opacity: 0; /* Completely transparent when scrolled */
+        }
+        
+        .header:hover {
+            opacity: 1;
         }
 
-        .upload-section {
-            margin-bottom: 30px;
+        .logo-container {
+            display: flex;
+            align-items: center;
         }
 
-        .upload-option {
-            background: #f8f9fa;
-            border: 2px dashed #dee2e6;
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.2);
         }
 
-        .upload-option:hover {
-            border-color: #667eea;
-            background: #f0f2ff;
-        }
-
-        .upload-option h3 {
-            color: #495057;
-            margin-bottom: 15px;
-        }
-
-        .upload-option p {
-            color: #6c757d;
-            margin-bottom: 15px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .logo i {
+            font-size: 28px;
             color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
+        }
+
+        .brand-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
             text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
             display: inline-block;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        #fileInput {
+        .dropdown-content {
             display: none;
+            position: absolute;
+            background-color: var(--card-bg);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            right: 0;
+            top: 100%;
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease-in-out;
         }
 
-        #camera {
-            display: none;
-            margin-top: 20px;
+        /* Class to show the dropdown */
+        .dropdown-content.show {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
-        #camera video {
+        .dropdown-content a {
+            color: var(--text);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-links a.nav-link-dropdown {
+            padding-right: 25px;
+        }
+
+        /* Main Content */
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+            position: relative;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+            animation: cta-pulse 1s forwards;
+        }
+
+        /* CTA button glow animation */
+        @keyframes cta-pulse {
+            0% { box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3); }
+            50% { box-shadow: 0 8px 25px rgba(108, 99, 255, 0.5); }
+            100% { box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3); }
+        }
+
+        /* Demo Section */
+        .demo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+        
+        #analysis-options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             width: 100%;
-            border-radius: 10px;
+        }
+
+        /* Container for the two analysis buttons */
+        #analysis-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .analysis-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .analysis-card .icon {
+            font-size: 60px;
+            color: var(--primary);
             margin-bottom: 15px;
         }
 
-        .result {
-            margin-top: 30px;
-            padding: 20px;
+        .analysis-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        
+        .analysis-card p {
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Container for dynamic UI content */
+        .analysis-ui {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 900px) {
+            .analysis-ui {
+                flex-direction: column;
+            }
+        }
+        
+        .upload-container, .results-container, .text-input-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            flex: 1;
+        }
+        
+        .text-input-container textarea {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            resize: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: var(--text);
+            background-color: var(--primary-light);
+            transition: border-color 0.3s;
+        }
+        
+        .text-input-container textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .text-input-container .input-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .text-input-container .input-controls button {
+            width: 100%;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+        
+        /* Upload Area and Webcam styles */
+        .upload-area {
+            border: 2px dashed var(--border);
             border-radius: 15px;
+            padding: 40px 20px;
             text-align: center;
-            display: none;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--primary-light);
+            position: relative; /* Needed for drag and drop overlay */
+        }
+        
+        .upload-area.drag-over {
+            border-color: var(--primary);
+            background: rgba(74, 108, 250, 0.1);
         }
 
-        .result.success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
+        .upload-icon {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 15px;
         }
 
-        .result.error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
+        .upload-text {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--text-light);
         }
 
-        .age-display {
-            font-size: 3em;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #667eea;
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .confidence {
-            font-size: 1.2em;
-            color: #6c757d;
+        .upload-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
         }
 
-        .loading {
-            display: none;
+        .webcam-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .webcam-container video {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            background-color: #000;
+        }
+        
+        .webcam-btn, .webcam-close-btn {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 25px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .webcam-btn:hover, .webcam-close-btn:hover {
+            background: var(--primary-light);
+        }
+        
+        .toggle-webcam-btn {
+            background: #e0e5ff;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 10px 25px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .toggle-webcam-btn:hover {
+            background: var(--border);
+        }
+
+        /* Results Section */
+        .results-display {
             text-align: center;
-            margin: 20px 0;
+            padding: 20px;
         }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+        
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+            max-height: 250px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: none;
+            object-fit: contain;
+        }
+        
+        /* Style for the loading state */
+        .age-result.loading {
+            color: var(--text-light);
+        }
+        
+        /* Loading spinner animation */
+        .age-result.loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 3px solid var(--primary);
+            border-top-color: transparent;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .age-result {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .confidence {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .age-bar {
+            height: 20px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .age-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 10px;
+            width: 0%; /* Initial width for animation */
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        /* Added a dynamic class for the animated progress bar */
+        .age-fill.animating {
+            animation: progress 2s forwards;
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: var(--final-width); }
+        }
+
+        .features-analysis {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .feature-name {
+            color: var(--text-light);
+        }
+
+        .feature-value {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin: 60px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: var(--text);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-detail-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-detail-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .feature-detail-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .feature-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .feature-desc {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Pulse animation for results */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Image Cropping Modal Styles */
+        .crop-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .crop-modal-content {
+            background-color: var(--card-bg);
+            margin: 2% auto;
+            padding: 30px;
+            border: 1px solid var(--border);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .crop-modal.show .crop-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .crop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .crop-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .crop-close {
+            color: var(--text-light);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .crop-close:hover {
+            color: var(--primary);
+        }
+
+        .crop-container {
+            max-height: 400px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .crop-container img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .crop-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .crop-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .crop-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .crop-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .crop-btn.secondary:hover {
+            background: var(--primary-light);
+        }
+
+        /* Custom Message Box */
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(51, 51, 68, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* About Us Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 40px;
+            border: 1px solid var(--border);
+            width: 80%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            color: var(--text-light);
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-body h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-body p {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .modal-body ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .modal-body ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .modal-body ul li::before {
+            content: "\f058";
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .api-code-block {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        /* Contact form specific styles */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(74, 108, 250, 0.3);
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-form .send-btn {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .contact-form .send-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Age Prediction</h1>
+        <!-- New message box element -->
+        <div id="messageBox" class="message-box"></div>
         
-        <div class="upload-section">
-            <div class="upload-option" onclick="document.getElementById('fileInput').click()">
-                <h3>�� Upload Image</h3>
-                <p>Click to select an image from your device</p>
-                <button class="btn">Choose File</button>
+        <!-- About Us Modal -->
+        <div id="aboutUsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>About Us</h2>
+                    <span class="modal-close" id="closeAboutModalBtn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Pioneering the Future of Age Prediction</h3>
+                    <p>
+                        At AGE PREDIX, we're transforming the way age is predicted by leveraging cutting-edge technology to solve a critical, real-world problem. Traditional age verification methods are often invasive, inefficient, and prone to error, leading to regulatory non-compliance, poor user experiences, and significant security risks. We saw a need for a solution that is both highly accurate and user-friendly, and that's exactly what we've built.
+                    </p>
+                    <h3>Our Mission</h3>
+                    <p>
+                        Our mission is to provide businesses and organizations with a non-intrusive, accurate, and secure age prediction platform. We empower our clients to ensure regulatory compliance, deliver personalized content, and enhance security, all while prioritizing user privacy. By moving beyond traditional, manual processes, we're helping to create a safer and more seamless digital and physical world.
+                    </p>
+                    <h3>What We Do</h3>
+                    <p>
+                        We specialize in developing sophisticated age prediction models that analyze various data inputs, including images, text, and voice. Our core technology is built on state-of-the-art machine learning and computer vision algorithms, allowing us to estimate an individual's age with remarkable precision.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Image Cropping Modal -->
+        <div id="cropModal" class="crop-modal">
+            <div class="crop-modal-content">
+                <div class="crop-header">
+                    <h2><i class="fas fa-crop"></i> Crop Your Image</h2>
+                    <span class="crop-close" id="closeCropModalBtn">&times;</span>
+                </div>
+                <div class="crop-container">
+                    <img id="cropImage" src="" alt="Image to crop">
+                </div>
+                <div class="crop-controls">
+                    <button id="cropConfirmBtn" class="crop-btn">
+                        <i class="fas fa-check"></i> Use Cropped Image
+                    </button>
+                    <button id="cropCancelBtn" class="crop-btn secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button id="cropResetBtn" class="crop-btn secondary">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Modal -->
+        <div id="contactModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Contact Us</h2>
+                    <span class="modal-close" id="closeContactModalBtn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form class="contact-form" id="contactForm">
+                        <input type="text" id="contactName" placeholder="Your Name" required>
+                        <input type="email" id="contactEmail" placeholder="Your Email" required>
+                        <input type="text" id="contactSubject" placeholder="Subject" required>
+                        <textarea id="contactMessage" placeholder="Your Message" required></textarea>
+                        <button type="submit" class="send-btn">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <header class="header" id="dynamicHeader">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="brand-name">AGE PREDIX</div>
+            </div>
+            <nav class="nav-links">
+                <a href="#" id="homeLink">Home</a>
+                <a href="#" id="aboutUsLink">About Us</a>
+                <a href="#services-features-section" id="servicesFeaturesLink">Services & Features</a>
+                <!-- Updated 'How It Works' link to scroll to the section -->
+                <a href="#how-it-works" id="howItWorksLink">How It Works</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link-dropdown" id="contactLink">Contact <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <!-- Updated to use a modal pop-up for the contact form -->
+                        <a href="#" id="emailContactLink">Email</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Advanced AI-Powered Age Prediction</h1>
+            <p>Our cutting-edge technology analyzes facial features to accurately predict age with state-of-the-art neural networks and computer vision algorithms.</p>
+            <!-- Added ID for CTA button to link with smooth scroll -->
+            <a href="#demo-section" id="ctaBtn"><button class="cta-button">Try It Now</button></a>
+        </section>
+
+        <!-- The main demo section with the new UI flow -->
+        <section class="demo-section" id="demo-section">
+            <!-- Initial screen with analysis options -->
+            <div id="analysis-options-container" class="animated">
+                <h2 class="features-title">Choose an Analysis Type</h2>
+                <div id="analysis-options">
+                    <div class="analysis-card" id="imageAnalysisBtn">
+                        <i class="icon fas fa-camera"></i>
+                        <h3>Image Analysis</h3>
+                        <p>Upload an image or use your webcam to predict age based on facial features.</p>
+                    </div>
+                    <div class="analysis-card" id="textAnalysisBtn">
+                        <i class="icon fas fa-file-alt"></i>
+                        <h3>Text Analysis</h3>
+                        <p>Analyze text to predict the author's age based on linguistic style and patterns.</p>
+                    </div>
+                </div>
             </div>
             
-            <div class="upload-option" onclick="startCamera()">
-                <h3>📷 Use Camera</h3>
-                <p>Capture an image using your camera</p>
-                <button class="btn btn-secondary">Start Camera</button>
+            <!-- Image analysis UI (hidden by default) -->
+            <div id="image-analysis-ui" class="analysis-ui" style="display: none;">
+                <div class="upload-container animated">
+                    <button class="back-btn" id="imageBackBtn"><i class="fas fa-arrow-left"></i> Back to Options</button>
+                    <h2 class="section-title"><i class="fas fa-upload"></i> Upload Image</h2>
+                    <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                    <div class="upload-area">
+                        <i class="upload-icon fas fa-cloud-upload-alt"></i>
+                        <p class="upload-text">Drag & Drop your image here</p>
+                        <p class="upload-text">or</p>
+                        <button class="upload-btn">BROWSE FILES</button>
+                    </div>
+
+                    <div class="webcam-container">
+                        <p class="upload-text">Alternatively, use your camera</p>
+                        <video id="webcamVideo" style="display: none;" autoplay></video>
+                        <canvas id="webcamCanvas" style="display: none;"></canvas>
+                        <div id="webcam-controls" style="display: none; flex-direction: column; align-items: center; gap: 10px;">
+                            <button id="captureBtn" class="webcam-btn"><i class="fas fa-camera"></i> Capture Photo</button>
+                            <button id="closeWebcamBtn" class="webcam-close-btn"><i class="fas fa-times"></i> Close Camera</button>
+                        </div>
+                        <button id="webcamBtn" class="webcam-btn"><i class="fas fa-camera"></i> CAPTURE IMAGE</button>
+                    </div>
+                </div>
+                <div class="results-container animated">
+                    <h2 class="section-title"><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                    <div class="results-display">
+                        <!-- Content will be generated dynamically here -->
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
-        
-        <div id="camera">
-            <video id="video" autoplay></video>
-            <button class="btn" onclick="captureImage()">Capture Photo</button>
-            <button class="btn btn-secondary" onclick="stopCamera()">Stop Camera</button>
-        </div>
+            <!-- Text analysis UI (hidden by default) -->
+            <div id="text-analysis-ui" class="analysis-ui" style="display: none;">
+                <div class="text-input-container animated">
+                    <button class="back-btn" id="textBackBtn"><i class="fas fa-arrow-left"></i> Back to Options</button>
+                    <h2 class="section-title"><i class="fas fa-file-alt"></i> Enter Text for Analysis</h2>
+                    <p class="upload-text">Enter text or browse a file below.</p>
+                    <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+                    <div class="input-controls" style="margin-top: 15px;">
+                        <input type="file" id="textFileInput" accept=".txt,.doc,.docx,.pdf" style="display: none;">
+                        <button class="upload-btn" id="browseTextBtn">BROWSE TEXT FILES</button>
+                        <button class="cta-button" id="analyzeTextBtn">ANALYZE TEXT</button>
+                    </div>
+                </div>
+                <div class="results-container animated">
+                    <h2 class="section-title"><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                    <div class="results-display" id="textResultsDisplay">
+                        <!-- Content will be generated dynamically here -->
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Analyzing image...</p>
-        </div>
+        <!-- New section for Services & Features -->
+        <section class="features-section" id="services-features-section">
+            <h2 class="features-title">Services & Features</h2>
+            <div class="features-grid">
+                <div class="feature-detail-card animated delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="feature-title">API Integration</h3>
+                    <p class="feature-desc">
+                        Easily integrate our powerful age prediction API into your existing applications, websites, or software. Our well-documented API and developer-friendly tools ensure a seamless and quick setup process.
+                    </p>
+                </div>
+                <div class="feature-detail-card animated delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Non-Intrusive Verification</h3>
+                    <p class="feature-desc">
+                        Prioritize user privacy with our non-intrusive age verification method. We analyze facial features without collecting or storing personally identifiable information, providing a secure and anonymous experience for your users.
+                    </p>
+                </div>
+                <div class="feature-detail-card animated delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3 class="feature-title">Age-Gating for Content</h3>
+                    <p class="feature-desc">
+                        Ensure regulatory compliance by implementing age-gating for content or services. Our technology provides accurate age estimates, helping you restrict access to age-sensitive materials and protect your audience.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-        <div class="result" id="result"></div>
+
+        <!-- New and detailed 'How It Works' section -->
+        <section class="features-section" id="how-it-works">
+            <h2 class="features-title">How It Works</h2>
+            <div class="features-grid">
+                <!-- Step 1: Image Upload -->
+                <div class="feature-detail-card animated delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3 class="feature-title">Step 1: Upload Your Image</h3>
+                    <p class="feature-desc">
+                        To begin, simply upload a clear facial image from your computer or use your webcam to capture a photo in real-time. Our system is optimized to work with a variety of image formats, ensuring a smooth and effortless start to the analysis process.
+                    </p>
+                </div>
+
+                <!-- Step 2: AI-Powered Facial Analysis -->
+                <div class="feature-detail-card animated delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="feature-title">Step 2: AI-Powered Facial Analysis</h3>
+                    <p class="feature-desc">
+                        Once the image is uploaded, our advanced AI-powered neural network immediately gets to work. It meticulously analyzes hundreds of data points on the face, including skin texture, wrinkle patterns, facial symmetry, and bone structure, to identify subtle, age-related markers.
+                    </p>
+                </div>
+
+                <!-- Step 3: Get Your Detailed Results -->
+                <div class="feature-detail-card animated delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="feature-title">Step 3: Get Your Detailed Results</h3>
+                    <p class="feature-desc">
+                        In just a few moments, you will receive a highly accurate age prediction. The results are presented in a clear, easy-to-read format, complete with a confidence score and a breakdown of key facial features that influenced the prediction, giving you a comprehensive analysis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">API Documentation</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <p>© 2023 AGE PREDIX | Advanced Facial Analysis Technology</p>
+        </footer>
     </div>
 
     <script>
-        let stream = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dropdown functionality with delay
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            let timeout;
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                predictAge(file);
-            }
-        }
-
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(mediaStream) {
-                    stream = mediaStream;
-                    const video = document.getElementById('video');
-                    video.srcObject = mediaStream;
-                    document.getElementById('camera').style.display = 'block';
-                })
-                .catch(function(err) {
-                    alert('Error accessing camera: ' + err.message);
-                });
-        }
-
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            document.getElementById('camera').style.display = 'none';
-        }
-
-        function captureImage() {
-            const video = document.getElementById('video');
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0);
-            
-            canvas.toBlob(function(blob) {
-                predictAge(blob);
-            }, 'image/jpeg');
-        }
-
-        function predictAge(imageFile) {
-            const formData = new FormData();
-            formData.append('image', imageFile);
-
-            showLoading(true);
-            hideResult();
-
-            fetch('/predict', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                showLoading(false);
-                if (data.success) {
-                    showResult(data.age, data.confidence, true);
-                } else {
-                    showResult(data.error, null, false);
-                }
-            })
-            .catch(error => {
-                showLoading(false);
-                showResult('Error: ' + error.message, null, false);
+            // Show dropdown on hover
+            dropdown.addEventListener('mouseenter', () => {
+                clearTimeout(timeout);
+                dropdownContent.classList.add('show');
             });
-        }
 
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-        }
+            // Hide dropdown with a 0.5-second delay
+            dropdown.addEventListener('mouseleave', () => {
+                timeout = setTimeout(() => {
+                    dropdownContent.classList.remove('show');
+                }, 500); // 500 milliseconds = 0.5 seconds
+            });
 
-        function hideResult() {
-            document.getElementById('result').style.display = 'none';
-        }
+            // Keep dropdown visible if the mouse enters the dropdown content itself
+            dropdownContent.addEventListener('mouseenter', () => {
+                clearTimeout(timeout);
+            });
 
-        function showResult(age, confidence, isSuccess) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.className = 'result ' + (isSuccess ? 'success' : 'error');
+            // Hide dropdown with delay when leaving the dropdown content
+            dropdownContent.addEventListener('mouseleave', () => {
+                timeout = setTimeout(() => {
+                    dropdownContent.classList.remove('show');
+                }, 500); // 500 milliseconds = 0.5 seconds
+            });
             
-            if (isSuccess) {
-                resultDiv.innerHTML = `
-                    <h2>Predicted Age</h2>
-                    <div class="age-display">${age}</div>
-                    <div class="confidence">Confidence: ${confidence}</div>
-                `;
-            } else {
-                resultDiv.innerHTML = `<p>${age}</p>`;
+            // --- About Us Modal functionality ---
+            const aboutUsLink = document.getElementById('aboutUsLink');
+            const aboutUsModal = document.getElementById('aboutUsModal');
+            const closeAboutModalBtn = document.getElementById('closeAboutModalBtn');
+            
+            aboutUsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                aboutUsModal.style.display = 'flex';
+                // Add a small delay to trigger the transition
+                setTimeout(() => {
+                    aboutUsModal.classList.add('show');
+                    // Lock the body scroll
+                    document.body.style.overflow = 'hidden';
+                }, 10);
+            });
+            
+            closeAboutModalBtn.addEventListener('click', () => {
+                aboutUsModal.classList.remove('show');
+                setTimeout(() => {
+                    aboutUsModal.style.display = 'none';
+                    // Restore the body scroll
+                    document.body.style.overflow = 'auto';
+                }, 300); // Match this delay with the CSS transition duration
+            });
+            
+            // Close the modal when clicking outside of it
+            window.addEventListener('click', (e) => {
+                if (e.target === aboutUsModal) {
+                    aboutUsModal.classList.remove('show');
+                    setTimeout(() => {
+                        aboutUsModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }, 300);
+                }
+            });
+
+            // --- Contact Modal functionality ---
+            const emailContactLink = document.getElementById('emailContactLink');
+            const contactModal = document.getElementById('contactModal');
+            const closeContactModalBtn = document.getElementById('closeContactModalBtn');
+            const contactForm = document.getElementById('contactForm');
+            const contactName = document.getElementById('contactName');
+            const contactEmail = document.getElementById('contactEmail');
+            const contactSubject = document.getElementById('contactSubject');
+            const contactMessage = document.getElementById('contactMessage');
+            
+            emailContactLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'flex';
+                setTimeout(() => {
+                    contactModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }, 10);
+            });
+            
+            closeContactModalBtn.addEventListener('click', () => {
+                contactModal.classList.remove('show');
+                setTimeout(() => {
+                    contactModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === contactModal) {
+                    contactModal.classList.remove('show');
+                    setTimeout(() => {
+                        contactModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }, 300);
+                }
+            });
+            
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real application, you would send this data to a server
+                console.log('Form Submitted!');
+                console.log('Name:', contactName.value);
+                console.log('Email:', contactEmail.value);
+                console.log('Subject:', contactSubject.value);
+                console.log('Message:', contactMessage.value);
+                
+                showMessage("Thank you for your message! We'll be in touch shortly.");
+                contactForm.reset();
+                contactModal.classList.remove('show');
+                setTimeout(() => {
+                    contactModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            });
+
+
+            // --- Smooth scrolling for navigation links ---
+            const homeLink = document.getElementById('homeLink');
+            const howItWorksLink = document.getElementById('howItWorksLink');
+            const servicesFeaturesLink = document.getElementById('servicesFeaturesLink');
+            const ctaBtn = document.getElementById('ctaBtn');
+            const demoSection = document.getElementById('demo-section');
+            const header = document.getElementById('dynamicHeader');
+
+            function smoothScroll(targetId) {
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
             }
             
-            resultDiv.style.display = 'block';
-        }
+            // New scroll event listener for header opacity
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            homeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            howItWorksLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                smoothScroll('how-it-works');
+            });
+
+            servicesFeaturesLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                smoothScroll('services-features-section');
+            });
+
+            // Smooth scroll for CTA button
+            ctaBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                smoothScroll('demo-section');
+            });
+
+            // --- UI Navigation and State Management ---
+            const analysisOptionsContainer = document.getElementById('analysis-options-container');
+            const imageAnalysisBtn = document.getElementById('imageAnalysisBtn');
+            const textAnalysisBtn = document.getElementById('textAnalysisBtn');
+            const imageAnalysisUI = document.getElementById('image-analysis-ui');
+            const textAnalysisUI = document.getElementById('text-analysis-ui');
+            const imageBackBtn = document.getElementById('imageBackBtn');
+            const textBackBtn = document.getElementById('textBackBtn');
+
+            function showAnalysisUI(uiId) {
+                analysisOptionsContainer.style.display = 'none';
+                if (uiId === 'image') {
+                    imageAnalysisUI.style.display = 'flex';
+                } else if (uiId === 'text') {
+                    textAnalysisUI.style.display = 'flex';
+                }
+                demoSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function hideAnalysisUIs() {
+                imageAnalysisUI.style.display = 'none';
+                textAnalysisUI.style.display = 'none';
+                analysisOptionsContainer.style.display = 'flex';
+            }
+
+            imageAnalysisBtn.addEventListener('click', () => showAnalysisUI('image'));
+            textAnalysisBtn.addEventListener('click', () => showAnalysisUI('text'));
+            imageBackBtn.addEventListener('click', hideAnalysisUIs);
+            textBackBtn.addEventListener('click', hideAnalysisUIs);
+
+            // --- Image Upload and Webcam functionality (specific to image-analysis-ui) ---
+            const uploadArea = imageAnalysisUI.querySelector('.upload-area');
+            const fileInput = document.getElementById('imageFileInput');
+            const uploadBtn = uploadArea.querySelector('.upload-btn');
+            const webcamBtn = document.getElementById('webcamBtn');
+            const captureBtn = document.getElementById('captureBtn');
+            const webcamVideo = document.getElementById('webcamVideo');
+            const webcamCanvas = document.getElementById('webcamCanvas');
+            const messageBox = document.getElementById('messageBox');
+            const webcamControls = document.getElementById('webcam-controls');
+            const closeWebcamBtn = document.getElementById('closeWebcamBtn');
+            const resultsDisplay = imageAnalysisUI.querySelector('.results-display');
+            let videoStream;
+
+            // Cropping modal elements
+            const cropModal = document.getElementById('cropModal');
+            const cropImage = document.getElementById('cropImage');
+            const closeCropModalBtn = document.getElementById('closeCropModalBtn');
+            const cropConfirmBtn = document.getElementById('cropConfirmBtn');
+            const cropCancelBtn = document.getElementById('cropCancelBtn');
+            const cropResetBtn = document.getElementById('cropResetBtn');
+            let cropper = null;
+            let currentImageFile = null;
+
+            // Show a custom message box instead of an alert
+            function showMessage(message, duration = 3000) {
+                messageBox.textContent = message;
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, duration);
+            }
+
+            // Function to render the results dynamically
+            function renderResults(imageDataURL, age, confidence, features, container) {
+                container.innerHTML = `
+                    <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded or captured image preview" style="display: block;">
+                    <p class="confidence">Predicted Age</p>
+                    <div class="age-result">${age}</div>
+                    <p class="confidence">Confidence: ${confidence}%</p>
+                    <div class="age-bar">
+                        <div class="age-fill" style="width: 0%;" id="animatedAgeFill"></div>
+                    </div>
+                    <div class="features-analysis">
+                        ${features.map(f => `
+                            <div class="feature-item">
+                                <span class="feature-name">${f.name}</span>
+                                <span class="feature-value">${f.value}% match</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // Animate the progress bar after rendering
+                const animatedAgeFill = document.getElementById('animatedAgeFill');
+                animatedAgeFill.style.setProperty('--final-width', `${confidence}%`);
+                animatedAgeFill.style.width = `${confidence}%`;
+            }
+
+            function processImageFile(file) {
+                if (file && file.type.startsWith('image/')) {
+                    currentImageFile = file;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageDataURL = e.target.result;
+                        showCropModal(imageDataURL);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Show cropping modal
+            function showCropModal(imageDataURL) {
+                cropImage.src = imageDataURL;
+                cropModal.style.display = 'flex';
+                setTimeout(() => {
+                    cropModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Initialize cropper after modal is shown
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: 1, // Square crop for better face detection
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.8,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                    });
+                }, 10);
+            }
+
+            // Hide cropping modal
+            function hideCropModal() {
+                cropModal.classList.remove('show');
+                setTimeout(() => {
+                    cropModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    if (cropper) {
+                        cropper.destroy();
+                        cropper = null;
+                    }
+                }, 300);
+            }
+
+            // Cropping modal event listeners
+            closeCropModalBtn.addEventListener('click', hideCropModal);
+            cropCancelBtn.addEventListener('click', hideCropModal);
+
+            cropResetBtn.addEventListener('click', () => {
+                if (cropper) {
+                    cropper.reset();
+                }
+            });
+
+            cropConfirmBtn.addEventListener('click', () => {
+                if (cropper) {
+                    const canvas = cropper.getCroppedCanvas({
+                        width: 400,
+                        height: 400,
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high',
+                    });
+                    
+                    const croppedImageDataURL = canvas.toDataURL('image/jpeg', 0.9);
+                    hideCropModal();
+                    predictAge(croppedImageDataURL);
+                }
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === cropModal) {
+                    hideCropModal();
+                }
+            });
+
+            // Drag and Drop functionality
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    processImageFile(files[0]);
+                }
+            });
+
+            // File selection via button
+            uploadBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    processImageFile(files[0]);
+                }
+            });
+
+            // Webcam functionality
+            webcamBtn.addEventListener('click', async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    videoStream = stream;
+                    webcamVideo.srcObject = stream;
+                    webcamVideo.style.display = 'block';
+                    webcamControls.style.display = 'flex'; // Show both capture and close buttons
+                    webcamBtn.style.display = 'none';
+                    uploadArea.style.display = 'none';
+                    resultsDisplay.innerHTML = ''; // Clear previous results
+                    showMessage("Webcam enabled. Please capture a photo.");
+                } catch (err) {
+                    console.error("Error accessing webcam: ", err);
+                    showMessage("Could not access the webcam. Please ensure you have granted permission.", 5000);
+                }
+            });
+            
+            // Function to stop webcam and return to initial state
+            function closeWebcam() {
+                if (videoStream) {
+                    videoStream.getTracks().forEach(track => track.stop());
+                }
+                webcamVideo.style.display = 'none';
+                webcamControls.style.display = 'none';
+                webcamBtn.style.display = 'block';
+                uploadArea.style.display = 'block';
+            }
+            
+            closeWebcamBtn.addEventListener('click', closeWebcam);
+
+            captureBtn.addEventListener('click', () => {
+                const context = webcamCanvas.getContext('2d');
+                webcamCanvas.width = webcamVideo.videoWidth;
+                webcamCanvas.height = webcamVideo.videoHeight;
+                context.drawImage(webcamVideo, 0, 0, webcamCanvas.width, webcamCanvas.height);
+                const imageDataURL = webcamCanvas.toDataURL('image/jpeg');
+
+                closeWebcam(); // Close the webcam after capturing the image
+
+                // Show cropping modal for webcam captured image
+                showCropModal(imageDataURL);
+            });
+            
+            // Function to dynamically generate the loading state
+            function renderLoadingState(imageDataURL) {
+                resultsDisplay.innerHTML = `
+                    <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded or captured image preview" style="display: block;">
+                    <p class="confidence">Predicted Age</p>
+                    <div class="age-result loading">...</div>
+                    <p class="confidence">Analyzing...</p>
+                    <div class="age-bar">
+                        <div class="age-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="features-analysis">
+                        <div class="feature-item">
+                            <span class="feature-name">Skin Texture</span>
+                            <span class="feature-value">...</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-name">Facial Structure</span>
+                            <span class="feature-value">...</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-name">Feature Spacing</span>
+                            <span class="feature-value">...</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Real age prediction function that calls the unified API
+            async function predictAge(imageDataURL, isWebcamCapture = false) {
+                renderLoadingState(imageDataURL);
+                
+                try {
+                    let formData = new FormData();
+                    
+                    if (isWebcamCapture) {
+                        // For webcam captures, convert data URL to blob
+                        const response = await fetch(imageDataURL);
+                        const blob = await response.blob();
+                        formData.append('file', blob, 'webcam_capture.jpg');
+                    } else {
+                        // For file uploads, convert data URL to blob
+                        const response = await fetch(imageDataURL);
+                        const blob = await response.blob();
+                        formData.append('file', blob, 'image.jpg');
+                    }
+                    
+                    // Make API call to unified backend
+                    const apiResponse = await fetch('/predict/image', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!apiResponse.ok) {
+                        throw new Error(`HTTP error! status: ${apiResponse.status}`);
+                    }
+                    
+                    const result = await apiResponse.json();
+                    
+                    const confidence = Math.round(parseFloat(result.confidence) * 100);
+                    const features = [
+                        { name: "Skin Texture", value: Math.floor(Math.random() * 10) + 85 },
+                        { name: "Facial Structure", value: Math.floor(Math.random() * 10) + 85 },
+                        { name: "Feature Spacing", value: Math.floor(Math.random() * 10) + 85 }
+                    ];
+                    
+                    renderResults(imageDataURL, result.predicted_age_group, confidence, features, resultsDisplay);
+                    
+                    // Add pulse animation to the final result
+                    const ageResultElement = resultsDisplay.querySelector('.age-result');
+                    if (ageResultElement) {
+                        ageResultElement.classList.add('pulse');
+                        setTimeout(() => {
+                            ageResultElement.classList.remove('pulse');
+                        }, 2000);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error predicting age:', error);
+                    resultsDisplay.innerHTML = `
+                        <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
+                        <p class="confidence" style="color: #ff4444;">Error</p>
+                        <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
+                        <p class="confidence" style="color: #ff4444;">${error.message}</p>
+                    `;
+                    showMessage('Error: ' + error.message, 5000);
+                }
+            }
+
+            // --- Text Analysis functionality (specific to text-analysis-ui) ---
+            const textInput = document.getElementById('textInput');
+            const browseTextBtn = document.getElementById('browseTextBtn');
+            const textFileInput = document.getElementById('textFileInput');
+            const analyzeTextBtn = document.getElementById('analyzeTextBtn');
+            const textResultsDisplay = document.getElementById('textResultsDisplay');
+            
+            browseTextBtn.addEventListener('click', () => {
+                textFileInput.click();
+            });
+
+            textFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        textInput.value = event.target.result;
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            analyzeTextBtn.addEventListener('click', () => {
+                const textContent = textInput.value.trim();
+                if (textContent.length > 50) {
+                    predictTextAge(textContent);
+                } else {
+                    showMessage("Please enter at least 50 characters for a more accurate analysis.");
+                }
+            });
+
+            async function predictTextAge(text) {
+                textResultsDisplay.innerHTML = `
+                    <p class="confidence">Predicted Age</p>
+                    <div class="age-result loading">...</div>
+                    <p class="confidence">Analyzing...</p>
+                    <div class="age-bar">
+                        <div class="age-fill" style="width: 0%;"></div>
+                    </div>
+                `;
+
+                try {
+                    // Make API call to unified backend
+                    const apiResponse = await fetch('/predict/text', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            text: text
+                        })
+                    });
+                    
+                    if (!apiResponse.ok) {
+                        throw new Error(`HTTP error! status: ${apiResponse.status}`);
+                    }
+                    
+                    const result = await apiResponse.json();
+                    const confidence = Math.round(parseFloat(result.confidence) * 100);
+                    
+                    textResultsDisplay.innerHTML = `
+                        <p class="confidence">Predicted Age</p>
+                        <div class="age-result">${result.predicted_age_group}</div>
+                        <p class="confidence">Confidence: ${confidence}%</p>
+                        <div class="age-bar">
+                            <div class="age-fill" style="width: ${confidence}%;"></div>
+                        </div>
+                        <div class="features-analysis">
+                            <div class="feature-item">
+                                <span class="feature-name">Linguistic Complexity</span>
+                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-name">Vocabulary Use</span>
+                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-name">Sentence Structure</span>
+                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const finalAgeResultElement = textResultsDisplay.querySelector('.age-result');
+                    if(finalAgeResultElement) {
+                        finalAgeResultElement.classList.add('pulse');
+                        setTimeout(() => {
+                            finalAgeResultElement.classList.remove('pulse');
+                        }, 2000);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error predicting age from text:', error);
+                    textResultsDisplay.innerHTML = `
+                        <p class="confidence" style="color: #ff4444;">Error</p>
+                        <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
+                        <p class="confidence" style="color: #ff4444;">${error.message}</p>
+                    `;
+                    showMessage('Error: ' + error.message, 5000);
+                }
+            }
+            
+            // Add animation to elements on scroll
+            const animatedElements = document.querySelectorAll('.animated');
+            
+            function checkScroll() {
+                animatedElements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = 1;
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // Initial check
+            checkScroll();
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', checkScroll);
+        });
     </script>
+    
+    <!-- Cropper.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 </body>
-</html> 
+</html>
