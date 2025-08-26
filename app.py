@@ -15,6 +15,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dotenv import load_dotenv
+import cv2
+import numpy as np
 
 # Load environment variables
 load_dotenv()
@@ -190,6 +192,28 @@ async def predict_image_age(file: UploadFile = File(...)):
         
         # Read and process image
         contents = await file.read()
+        
+        # Face detection validation
+        file_bytes = np.asarray(bytearray(contents), dtype=np.uint8)
+        image = cv2.imdecode(file_bytes, 1)
+        
+        if image is None:
+            raise HTTPException(status_code=400, detail="Invalid image format")
+        
+        # Load Haar Cascade for face detection
+        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+        
+        # Convert to grayscale for face detection
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # Detect faces
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+        
+        # Check if any faces were detected
+        if len(faces) == 0:
+            raise HTTPException(status_code=400, detail="No face detected in the image. Please upload an image with a clear face.")
+        
+        # Convert to PIL Image for model processing
         img = Image.open(io.BytesIO(contents)).convert("RGB")
         
         # Age prediction

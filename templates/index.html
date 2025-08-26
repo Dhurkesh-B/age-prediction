@@ -2171,7 +2171,9 @@
                     });
                     
                     if (!apiResponse.ok) {
-                        throw new Error(`HTTP error! status: ${apiResponse.status}`);
+                        const errorData = await apiResponse.json().catch(() => ({}));
+                        const errorMessage = errorData.detail || `HTTP error! status: ${apiResponse.status}`;
+                        throw new Error(errorMessage);
                     }
                     
                     const result = await apiResponse.json();
@@ -2199,13 +2201,39 @@
                     
                 } catch (error) {
                     console.error('Error predicting age:', error);
-                    resultsDisplay.innerHTML = `
-                        <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
-                        <p class="confidence" style="color: #ff4444;">Error</p>
-                        <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
-                        <p class="confidence" style="color: #ff4444;">${error.message}</p>
-                    `;
-                    showMessage('Error: ' + error.message, 5000);
+                    
+                    // Check if it's a face detection error
+                    const errorMessage = error.message || 'Unknown error occurred';
+                    const isFaceDetectionError = errorMessage.includes('No face detected') || 
+                                               errorMessage.includes('face') || 
+                                               apiResponse?.status === 400;
+                    
+                    if (isFaceDetectionError) {
+                        resultsDisplay.innerHTML = `
+                            <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
+                            <div style="text-align: center; padding: 20px;">
+                                <i class="fas fa-user-times" style="font-size: 60px; color: #ff7d4d; margin-bottom: 15px;"></i>
+                                <p class="confidence" style="color: #ff7d4d; font-size: 18px; font-weight: 600;">No Face Detected</p>
+                                <div class="age-result" style="color: #ff7d4d; font-size: 24px;">Please upload an image with a clear face</div>
+                                <p class="confidence" style="color: #666; margin-top: 15px; text-align: left;">
+                                    Tips for better results:<br>
+                                    • Ensure the face is clearly visible<br>
+                                    • Use good lighting<br>
+                                    • Face should be the main subject<br>
+                                    • Avoid blurry or low-quality images
+                                </p>
+                            </div>
+                        `;
+                        showMessage('No face detected in the image. Please try another image with a clear face.', 5000);
+                    } else {
+                        resultsDisplay.innerHTML = `
+                            <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
+                            <p class="confidence" style="color: #ff4444;">Error</p>
+                            <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
+                            <p class="confidence" style="color: #ff4444;">${errorMessage}</p>
+                        `;
+                        showMessage('Error: ' + errorMessage, 5000);
+                    }
                 }
             }
 
