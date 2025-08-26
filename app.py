@@ -17,9 +17,19 @@ from datetime import datetime
 from dotenv import load_dotenv
 import cv2
 import numpy as np
+import json
 
 # Load environment variables
 load_dotenv()
+
+# Load age group information from JSON file
+try:
+    with open("tips.json", "r") as f:
+        age_group_info = json.load(f)
+    print("Age group information loaded from tips.json")
+except FileNotFoundError:
+    print("tips.json not found, using default age group info")
+    age_group_info = {}
 
 # --------------------
 # 1. Load Image Model
@@ -284,11 +294,21 @@ async def predict_text_age(input_data: TextInput):
         except:
             confidence = 0.8  # Default confidence if predict_proba not available
 
+        
+        # Get age-specific information
+        age_info = age_group_info.get(prediction, {
+            "advice": "General life advice applies based on individual circumstances.",
+            "eligibility": "Varies by specific age and location",
+            "not_eligible": "Varies by specific age and location", 
+            "healthcare_tips": "General wellness tips apply to all."
+        })
+
         return JSONResponse(content={
             "input": input_data.text,
             "predicted_age_group": prediction,
             "confidence": confidence,
-            "type": "text"
+            "type": "text",
+            "age_info": age_info
         })
 
     except HTTPException:

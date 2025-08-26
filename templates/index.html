@@ -2297,6 +2297,8 @@
                     const result = await apiResponse.json();
                     const confidence = Math.round(parseFloat(result.confidence) * 100);
                     
+                    const ageInfo = result.age_info || {};
+                    
                     textResultsDisplay.innerHTML = `
                         <p class="confidence">Predicted Age</p>
                         <div class="age-result">${result.predicted_age_group}</div>
@@ -2304,18 +2306,22 @@
                         <div class="age-bar">
                             <div class="age-fill" style="width: ${confidence}%;"></div>
                         </div>
-                        <div class="features-analysis">
-                            <div class="feature-item">
-                                <span class="feature-name">Linguistic Complexity</span>
-                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                        <div class="features-analysis" style="text-align: left;">
+                            <div style="margin-bottom: 20px; padding: 15px; background: var(--primary-light); border-radius: 10px;">
+                                <h4 style="color: var(--primary); margin-bottom: 10px; font-size: 16px;">💡 Life Advice</h4>
+                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.advice || 'General life advice applies.'}</p>
                             </div>
-                            <div class="feature-item">
-                                <span class="feature-name">Vocabulary Use</span>
-                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                            <div style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 10px;">
+                                <h4 style="color: #2d5a2d; margin-bottom: 10px; font-size: 16px;">✅ Eligibility</h4>
+                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.eligibility || 'Varies by location and circumstances.'}</p>
                             </div>
-                            <div class="feature-item">
-                                <span class="feature-name">Sentence Structure</span>
-                                <span class="feature-value">${Math.floor(Math.random() * 10) + 85}% match</span>
+                            <div style="margin-bottom: 20px; padding: 15px; background: #ffe8e8; border-radius: 10px;">
+                                <h4 style="color: #8b2635; margin-bottom: 10px; font-size: 16px;">❌ Not Eligible</h4>
+                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.not_eligible || 'Varies by location and circumstances.'}</p>
+                            </div>
+                            <div style="margin-bottom: 20px; padding: 15px; background: #f0f8ff; border-radius: 10px;">
+                                <h4 style="color: #1e3a8a; margin-bottom: 10px; font-size: 16px;">💊 Healthcare Tips</h4>
+                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.healthcare_tips || 'General wellness tips apply.'}</p>
                             </div>
                         </div>
                     `;

@@ -1,0 +1,80 @@
+{
+  "0-5": {
+    "advice": "At this age, children are full of curiosity and energy. It's important to let them explore their surroundings safely while encouraging play and creativity. Eating healthy foods helps them grow strong, and listening to simple stories develops imagination. Parents should spend time reading, singing, and playing with them, building a strong bond. This is also the time to teach basic manners and kindness in fun ways.",
+    "eligibility": "Kindergarten, Cartoons",
+    "not_eligible": "Voting, Driving, Marriage",
+    "healthcare_tips": "Focus on vaccinations, balanced diet, and pediatric check-ups."
+  },
+  "6-12": {
+    "advice": "School-age children are developing their identity and learning fundamental skills. Encourage curiosity, support their education, and help them build friendships. This is a crucial time for developing good habits, learning responsibility, and exploring interests through activities and hobbies.",
+    "eligibility": "Primary school, Sports activities, Art classes",
+    "not_eligible": "Voting, Driving, Marriage, Employment",
+    "healthcare_tips": "Regular exercise, balanced nutrition, and adequate sleep for growth."
+  },
+  "10-13": {
+    "advice": "Pre-teens are experiencing rapid physical and emotional changes. This is a crucial time for building self-esteem, developing social skills, and learning to handle responsibilities. Encourage open communication, support their interests, and help them navigate friendships and academic challenges.",
+    "eligibility": "Middle school, Organized sports, Youth programs, Basic chores",
+    "not_eligible": "Voting, Driving, Employment, Dating (typically)",
+    "healthcare_tips": "Focus on nutrition during growth spurts, encourage physical activity, and monitor emotional well-being."
+  },
+  "13-17": {
+    "advice": "Teenagers are navigating identity formation and increasing independence. Support their academic goals, encourage healthy relationships, and help them develop decision-making skills. This is a time for exploring interests, building self-confidence, and preparing for adulthood.",
+    "eligibility": "High school, Part-time jobs (with restrictions), Learner's permit",
+    "not_eligible": "Voting, Full-time employment, Marriage (in most places)",
+    "healthcare_tips": "Mental health awareness, healthy lifestyle choices, and regular check-ups."
+  },
+  "14-17": {
+    "advice": "Mid to late teenagers are preparing for adulthood while still developing emotionally. Focus on academic achievement, career exploration, and building healthy relationships. This is a time for increased responsibility and learning life skills.",
+    "eligibility": "High school, Part-time work permits, Learner's driving permit, Some volunteer opportunities",
+    "not_eligible": "Voting, Full-time employment, Marriage (in most places), Military service",
+    "healthcare_tips": "Mental health support, healthy lifestyle habits, and preparation for adult healthcare."
+  },
+  "18-24": {
+    "advice": "Young adults face the exciting yet challenging transition from school to college or work. They should manage time wisely between academics, social life, and self-care. Building strong friendships and professional networks creates future opportunities. Learning new skills and exploring passions helps define their career path. Maintaining physical and mental health, along with self-confidence, ensures long-term growth.",
+    "eligibility": "Voting, Driving license, University, Entry-level jobs, Marriage",
+    "not_eligible": "Senior jobs, Retirement benefits",
+    "healthcare_tips": "Avoid junk food, manage stress, and sleep well."
+  },
+  "25-34": {
+    "advice": "This is often a time of career building and major life decisions. Focus on professional development, financial planning, and building meaningful relationships. Many people in this age group are establishing their careers, starting families, or pursuing advanced education.",
+    "eligibility": "Full employment, Marriage, Home ownership, Advanced degrees",
+    "not_eligible": "Retirement benefits, Senior discounts",
+    "healthcare_tips": "Regular health screenings, stress management, and work-life balance."
+  },
+  "35-44": {
+    "advice": "Mid-life brings opportunities for career advancement and family responsibilities. Focus on maintaining health, building wealth, and nurturing relationships. This is often a time of peak earning potential and significant life responsibilities.",
+    "eligibility": "Senior positions, Leadership roles, Property investment",
+    "not_eligible": "Early retirement (typically), Senior citizen benefits",
+    "healthcare_tips": "Preventive care, regular exercise, and health monitoring."
+  },
+  "45-59": {
+    "advice": "Family responsibilities. Focus on maintaining health, building wealth, and nurturing relationships. This is often a time of peak earning potential and significant life responsibilities.",
+    "eligibility": "Senior positions, Leadership roles, Property investment",
+    "not_eligible": "Early retirement (typically), Senior citizen benefits",
+    "healthcare_tips": "Preventive care, regular exercise, and health monitoring."
+  },
+  "50-59": {
+    "advice": "Pre-retirement years are crucial for financial planning and health maintenance. Focus on career peak, mentoring others, and preparing for retirement. This is a time to enjoy achievements while planning for the future.",
+    "eligibility": "Senior executive roles, Pre-retirement planning, AARP membership",
+    "not_eligible": "Full retirement benefits (typically)",
+    "healthcare_tips": "Comprehensive health screenings, fitness maintenance, and wellness planning."
+  },
+  "60-79": {
+    "advice": "In this age group, enjoying a peaceful and healthy lifestyle is key. Light exercise such as walking, yoga, or gardening keeps the body active. Spending time with grandchildren and sharing wisdom brings joy and purpose. Socializing within the community helps avoid loneliness and keeps the mind engaged. Regular medical checkups and relaxation practices ensure comfort and peace.",
+    "eligibility": "Retirement benefits, Senior discounts, Medicare eligibility",
+    "not_eligible": "High-intensity employment, Extreme sports",
+    "healthcare_tips": "Regular medical monitoring, gentle exercise, and social engagement."
+  },
+  "80+": {
+    "advice": "Focus on comfort, dignity, and quality of life. Maintain social connections, engage in gentle activities, and cherish time with loved ones. This is a time for reflection, sharing wisdom, and enjoying life's simple pleasures.",
+    "eligibility": "Full senior benefits, Specialized care services",
+    "not_eligible": "High-stress activities, Intensive employment",
+    "healthcare_tips": "Comprehensive medical care, comfort measures, and family support."
+  },
+  "80-100": {
+    "advice": "At this advanced age, focus on comfort, dignity, and quality of life. Maintain social connections with family and friends, engage in gentle activities that bring joy, and cherish precious moments with loved ones. This is a time for reflection, sharing a lifetime of wisdom, and finding peace in life's simple pleasures.",
+    "eligibility": "Full senior benefits, Specialized care services, Priority healthcare access",
+    "not_eligible": "High-stress activities, Intensive employment, Extreme physical activities",
+    "healthcare_tips": "Comprehensive medical care with regular monitoring, comfort-focused treatments, family support systems, and gentle mobility exercises as tolerated."
+  }
+}
