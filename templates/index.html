@@ -598,6 +598,24 @@
             margin: 0 auto;
         }
         
+        /* Services & Features specific responsive layout */
+        #services-features-section .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Mobile responsive for Services & Features - stack vertically */
+        @media (max-width: 768px) {
+            #services-features-section .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                max-width: 400px;
+            }
+        }
+        
         .feature-detail-card {
             background: var(--card-bg);
             border-radius: 15px;
@@ -1420,7 +1438,9 @@
 
         <section class="hero">
             <h1>Advanced AI-Powered Age Prediction</h1>
-            <p>Our cutting-edge technology analyzes facial features to accurately predict age with state-of-the-art neural networks and computer vision algorithms.</p>
+            <p>
+                Our technology predicts age through facial and text analysis, using neural networks, computer vision, and NLP to deliver results.            
+            </p>
             <!-- Added ID for CTA button to link with smooth scroll -->
             <a href="#demo-section" id="ctaBtn"><button class="cta-button">Try It Now</button></a>
         </section>
@@ -1523,7 +1543,7 @@
                     </div>
                     <h3 class="feature-title">Step 1: Upload Your Image</h3>
                     <p class="feature-desc">
-                        To begin, simply upload a clear facial image from your computer or use your webcam to capture a photo in real-time. Our system is optimized to work with a variety of image formats, ensuring a smooth and effortless start to the analysis process.
+                        Upload a clear facial photo from your device or capture one with your webcam. Our system supports multiple formats for a quick and easy start.
                     </p>
                 </div>
 
@@ -1534,7 +1554,7 @@
                     </div>
                     <h3 class="feature-title">Step 2: AI-Powered Facial Analysis</h3>
                     <p class="feature-desc">
-                        Once the image is uploaded, our advanced AI-powered neural network immediately gets to work. It meticulously analyzes hundreds of data points on the face, including skin texture, wrinkle patterns, facial symmetry, and bone structure, to identify subtle, age-related markers.
+                        After upload, our AI model scans your face, examining skin texture, wrinkles, symmetry, and bone structure to detect subtle age-related markers.
                     </p>
                 </div>
 
@@ -1543,9 +1563,9 @@
                     <div class="feature-icon">
                         <i class="fas fa-chart-pie"></i>
                     </div>
-                    <h3 class="feature-title">Step 3: Get Your Detailed Results</h3>
+                    <h3 class="feature-title">Step 3: View Your Results</h3>
                     <p class="feature-desc">
-                        In just a few moments, you will receive a highly accurate age prediction. The results are presented in a clear, easy-to-read format, complete with a confidence score and a breakdown of key facial features that influenced the prediction, giving you a comprehensive analysis.
+                        In moments, you’ll receive an accurate age prediction with a confidence score and a clear breakdown of the facial features that shaped the analysis.
                     </p>
                 </div>
             </div>
@@ -1562,7 +1582,7 @@
                     </div>
                     <h3 class="feature-title">Step 1: Input Your Text</h3>
                     <p class="feature-desc">
-                        Enter text directly into our analysis field or upload a text file from your computer. Our system works best with at least 50 characters of natural writing, such as social media posts, emails, or any written content that reflects your communication style.
+                        Type directly into the analysis field or upload a text file. For best results, use at least 50 characters of natural writing, like posts, emails, or everyday content that reflects your style.
                     </p>
                 </div>
 
@@ -1573,7 +1593,7 @@
                     </div>
                     <h3 class="feature-title">Step 2: Linguistic Pattern Analysis</h3>
                     <p class="feature-desc">
-                        Our sophisticated natural language processing algorithms analyze your writing style, vocabulary complexity, sentence structure, punctuation patterns, and generational language markers. These linguistic fingerprints reveal age-related communication patterns unique to different age groups.
+                        Our NLP model examines your writing style, including vocabulary, sentence structure, punctuation, and generational language markers. These patterns highlight age-related communication traits across different groups.
                     </p>
                 </div>
 
@@ -1584,7 +1604,7 @@
                     </div>
                     <h3 class="feature-title">Step 3: Age Prediction Results</h3>
                     <p class="feature-desc">
-                        Receive an accurate age prediction based on your text's linguistic characteristics. The results include a confidence score and insights into the key language patterns that influenced the prediction, helping you understand how writing style correlates with age demographics.
+                        Get an accurate age prediction from your text’s linguistic traits, along with a confidence score and insights into the key language patterns that shaped the result.
                     </p>
                 </div>
             </div>
@@ -1600,7 +1620,7 @@
                             </div>
                             <h3 class="feature-title">Non-Intrusive Verification</h3>
                             <p class="feature-desc">
-                                Prioritize user privacy with our non-intrusive age verification method. We analyze facial features without collecting or storing personally identifiable information, providing a secure and anonymous experience for your users.
+                                Verify age securely by analyzing facial features without storing personal data.
                             </p>
                         </div>
                         <div class="feature-detail-card animated delay-3">
@@ -1609,7 +1629,7 @@
                             </div>
                             <h3 class="feature-title">Age-Gating for Content</h3>
                             <p class="feature-desc">
-                                Ensure regulatory compliance by implementing age-gating for content or services. Our technology provides accurate age estimates, helping you restrict access to age-sensitive materials and protect your audience.
+                                Stay compliant by restricting access to age-sensitive content with accurate age estimation.
                             </p>
                         </div>
                     </div>
