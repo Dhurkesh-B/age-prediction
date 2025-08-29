@@ -150,4 +150,4 @@ This project is licensed under the **MIT License**.
 
 ---
 
-Would you like me to also create **copy-paste badge code blocks** 
+Would you like me to create **copy-paste badge code blocks** 
