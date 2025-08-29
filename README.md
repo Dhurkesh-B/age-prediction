@@ -150,4 +150,4 @@ This project is licensed under the **MIT License**.
 
 ---
 
-Would you like me to also create **copy-paste badge code blocks** (so you can easily put them at the top of the README)?
+Would you like me to also create **copy-paste badge code blocks** 
