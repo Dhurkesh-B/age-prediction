@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGE PREDIX </title>
+    <title>AGE PREDIX</title>
     <link rel="icon" type="image/png" href="/favicon.png?v=3">
     <link rel="shortcut icon" href="/favicon.png?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,6 +29,21 @@
             --card-bg: #ffffff;
             --border: #e0e5ff;
             --success: #4cc9a4;
+            --error: #ff4444;
+        }
+
+        .dark-theme {
+            --primary: #6c63ff;
+            --primary-light: #3d3b6a;
+            --secondary: #ff7d4d;
+            --accent: #4a6cfa;
+            --text: #f1f5f9;
+            --text-light: #a0a8b4;
+            --background: #1e293b;
+            --card-bg: #2d384c;
+            --border: #475569;
+            --success: #53d29a;
+            --error: #ff7373;
         }
 
         body {
@@ -37,6 +52,7 @@
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
 
         .container {
@@ -53,17 +69,16 @@
             padding: 20px 0;
             margin-bottom: 40px;
             border-bottom: 1px solid var(--border);
-            /* New styles for dynamic header */
             position: sticky;
             top: 0;
             z-index: 100;
             background-color: var(--background);
-            opacity: 1; /* Initially fully visible */
-            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out, background-color 0.5s ease;
         }
         
         .header.scrolled {
-            opacity: 0; /* Completely transparent when scrolled */
+            opacity: 0;
         }
         
         .header:hover {
@@ -97,11 +112,13 @@
             font-size: 28px;
             font-weight: 700;
             color: var(--primary);
+            transition: color 0.5s ease;
         }
 
         .nav-links {
             display: flex;
             gap: 30px;
+            align-items: center;
         }
 
         .nav-links a {
@@ -112,6 +129,20 @@
         }
 
         .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle-btn:hover {
             color: var(--primary);
         }
         
@@ -177,6 +208,7 @@
             margin-bottom: 20px;
             color: var(--text);
             line-height: 1.2;
+            transition: color 0.5s ease;
         }
 
         .hero p {
@@ -185,6 +217,7 @@
             max-width: 700px;
             margin: 0 auto 30px;
             line-height: 1.6;
+            transition: color 0.5s ease;
         }
 
         .cta-button {
@@ -249,7 +282,7 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease;
             cursor: pointer;
         }
 
@@ -262,6 +295,7 @@
             font-size: 60px;
             color: var(--primary);
             margin-bottom: 15px;
+            transition: color 0.5s ease;
         }
 
         .analysis-card h3 {
@@ -270,11 +304,13 @@
             font-weight: 700;
             color: var(--text);
             margin-bottom: 10px;
+            transition: color 0.5s ease;
         }
         
         .analysis-card p {
             color: var(--text-light);
             line-height: 1.5;
+            transition: color 0.5s ease;
         }
 
         /* Container for dynamic UI content */
@@ -299,6 +335,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid var(--border);
             flex: 1;
+            transition: background-color 0.5s ease, border-color 0.5s ease;
         }
         
         .text-input-container textarea {
@@ -312,7 +349,7 @@
             font-size: 16px;
             color: var(--text);
             background-color: var(--primary-light);
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, background-color 0.5s ease, color 0.5s ease;
         }
         
         .text-input-container textarea:focus {
@@ -340,10 +377,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: color 0.5s ease;
         }
 
         .section-title i {
             color: var(--primary);
+            transition: color 0.5s ease;
         }
 
         .back-btn {
@@ -372,7 +411,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: var(--primary-light);
-            position: relative; /* Needed for drag and drop overlay */
+            position: relative;
         }
         
         .upload-area.drag-over {
@@ -384,12 +423,14 @@
             font-size: 50px;
             color: var(--primary);
             margin-bottom: 15px;
+            transition: color 0.5s ease;
         }
 
         .upload-text {
             font-size: 16px;
             margin-bottom: 15px;
             color: var(--text-light);
+            transition: color 0.5s ease;
         }
 
         .upload-btn {
@@ -447,7 +488,7 @@
         }
         
         .toggle-webcam-btn {
-            background: #e0e5ff;
+            background: var(--primary-light);
             color: var(--primary);
             border: 1px solid var(--border);
             padding: 10px 25px;
@@ -510,12 +551,14 @@
             color: var(--primary);
             margin: 20px 0;
             font-family: 'Montserrat', sans-serif;
+            transition: color 0.5s ease;
         }
 
         .confidence {
             font-size: 18px;
             color: var(--text-light);
             margin-bottom: 30px;
+            transition: color 0.5s ease;
         }
 
         .age-bar {
@@ -563,12 +606,35 @@
 
         .feature-name {
             color: var(--text-light);
+            transition: color 0.5s ease;
         }
 
         .feature-value {
             color: var(--primary);
             font-weight: 500;
+            transition: color 0.5s ease;
         }
+        
+        .light-card-background {
+            background: var(--primary-light);
+            transition: background-color 0.5s ease;
+        }
+        
+        .light-card-text {
+            color: var(--text);
+            transition: color 0.5s ease;
+        }
+        
+        .light-text-secondary {
+            color: var(--text-light);
+            transition: color 0.5s ease;
+        }
+        
+        .light-primary-color {
+            color: var(--primary);
+            transition: color 0.5s ease;
+        }
+
 
         /* Features Section */
         .features-section {
@@ -582,6 +648,7 @@
             font-weight: 700;
             margin-bottom: 50px;
             color: var(--text);
+            transition: color 0.5s ease;
         }
         
         .features-grid {
@@ -623,7 +690,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease;
         }
         
         .feature-detail-card:hover {
@@ -637,11 +704,13 @@
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--text);
+            transition: color 0.5s ease;
         }
 
         .feature-detail-card p {
             color: var(--text-light);
             line-height: 1.6;
+            transition: color 0.5s ease;
         }
 
         @media (max-width: 768px) {
@@ -676,6 +745,7 @@
             margin: 0 auto 20px;
             color: var(--primary);
             font-size: 28px;
+            transition: all 0.5s ease;
         }
 
         .feature-title {
@@ -684,11 +754,13 @@
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--text);
+            transition: color 0.5s ease;
         }
 
         .feature-desc {
             color: var(--text-light);
             line-height: 1.6;
+            transition: color 0.5s ease;
         }
 
         /* Footer */
@@ -698,6 +770,7 @@
             margin-top: 60px;
             border-top: 1px solid var(--border);
             color: var(--text-light);
+            transition: color 0.5s ease, border-color 0.5s ease;
         }
 
         .footer-links {
@@ -1424,24 +1497,25 @@
                 <a href="#" id="homeLink">Home</a>
                 <a href="#" id="aboutUsLink">About Us</a>
                 <a href="#services-features-section" id="servicesFeaturesLink">Services & Features</a>
-                <!-- Updated 'How It Works' link to scroll to the section -->
                 <a href="#how-it-works" id="howItWorksLink">How It Works</a>
                 <div class="dropdown">
                     <a href="#" class="nav-link-dropdown" id="contactLink">Contact <i class="fas fa-caret-down"></i></a>
                     <div class="dropdown-content">
-                        <!-- Updated to use a modal pop-up for the contact form -->
                         <a href="#" id="emailContactLink">Email</a>
                     </div>
                 </div>
+                <!-- Theme toggle button -->
+                <button id="theme-toggle-btn" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
             </nav>
         </header>
 
         <section class="hero">
             <h1>Advanced AI-Powered Age Prediction</h1>
             <p>
-                Our technology predicts age through facial and text analysis, using neural networks, computer vision, and NLP to deliver results.            
+                Our technology predicts age through facial and text analysis, using neural networks, computer vision, and NLP to deliver results.
             </p>
-            <!-- Added ID for CTA button to link with smooth scroll -->
             <a href="#demo-section" id="ctaBtn"><button class="cta-button">Try It Now</button></a>
         </section>
 
@@ -1522,14 +1596,9 @@
             </div>
         </section>
 
-
-
         <!-- New and detailed 'How It Works' section -->
         <section class="features-section" id="how-it-works">
             <h2 class="features-title">How It Works</h2>
-            <!-- <p style="text-align: center; color: var(--text-light); margin-bottom: 40px; font-size: 18px;">
-                Our platform offers two powerful analysis methods to predict age with remarkable accuracy
-            </p> -->
             
             <!-- Image Analysis Process -->
             <h3 style="text-align: center; color: var(--primary); margin: 40px 0 30px 0; font-size: 24px; font-weight: 600;">
@@ -1610,46 +1679,67 @@
             </div>
         </section>
 
-                <!-- New section for Services & Features -->
-                <section class="features-section" id="services-features-section">
-                    <h2 class="features-title">Services & Features</h2>
-                    <div class="features-grid">
-                        <div class="feature-detail-card animated delay-2">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h3 class="feature-title">Non-Intrusive Verification</h3>
-                            <p class="feature-desc">
-                                Verify age securely by analyzing facial features without storing personal data.
-                            </p>
-                        </div>
-                        <div class="feature-detail-card animated delay-3">
-                            <div class="feature-icon">
-                                <i class="fas fa-ban"></i>
-                            </div>
-                            <h3 class="feature-title">Age-Gating for Content</h3>
-                            <p class="feature-desc">
-                                Stay compliant by restricting access to age-sensitive content with accurate age estimation.
-                            </p>
-                        </div>
+        <!-- New section for Services & Features -->
+        <section class="features-section" id="services-features-section">
+            <h2 class="features-title">Services & Features</h2>
+            <div class="features-grid">
+                <div class="feature-detail-card animated delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                </section>
+                    <h3 class="feature-title">Non-Intrusive Verification</h3>
+                    <p class="feature-desc">
+                        Verify age securely by analyzing facial features without storing personal data.
+                    </p>
+                </div>
+                <div class="feature-detail-card animated delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3 class="feature-title">Age-Gating for Content</h3>
+                    <p class="feature-desc">
+                        Stay compliant by restricting access to age-sensitive content with accurate age estimation.
+                    </p>
+                </div>
+            </div>
+        </section>
         
 
         <footer class="footer">
-            <!-- <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">API Documentation</a>
-                <a href="#">Contact Us</a>
-            </div> -->
             <p>© 2026 AGE PREDIX | Age Prediction Technology</p>
             <p style="margin-top: 10px; font-weight: 600; color: var(--primary);">Developed by Team HUSTLERS</p>
         </footer>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle functionality
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            const themeIcon = themeToggleBtn.querySelector('i');
+            const storedTheme = localStorage.getItem('theme');
+
+            // Set initial theme based on local storage or system preference
+            if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-theme');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+                if (isDark) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+
             // Dropdown functionality with delay
             const dropdown = document.querySelector('.dropdown');
             const dropdownContent = document.querySelector('.dropdown-content');
@@ -2205,17 +2295,17 @@
                     // Check if it's a face detection error
                     const errorMessage = error.message || 'Unknown error occurred';
                     const isFaceDetectionError = errorMessage.includes('No face detected') || 
-                                               errorMessage.includes('face') || 
-                                               apiResponse?.status === 400;
+                                                 errorMessage.includes('face') || 
+                                                 apiResponse?.status === 400;
                     
                     if (isFaceDetectionError) {
                         resultsDisplay.innerHTML = `
                             <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
                             <div style="text-align: center; padding: 20px;">
-                                <i class="fas fa-user-times" style="font-size: 60px; color: #ff7d4d; margin-bottom: 15px;"></i>
-                                <p class="confidence" style="color: #ff7d4d; font-size: 18px; font-weight: 600;">No Face Detected</p>
-                                <div class="age-result" style="color: #ff7d4d; font-size: 24px;">Please upload an image with a clear face</div>
-                                <p class="confidence" style="color: #666; margin-top: 15px; text-align: left;">
+                                <i class="fas fa-user-times" style="font-size: 60px; color: var(--error); margin-bottom: 15px;"></i>
+                                <p class="confidence" style="color: var(--error); font-size: 18px; font-weight: 600;">No Face Detected</p>
+                                <div class="age-result" style="color: var(--error); font-size: 24px;">Please upload an image with a clear face</div>
+                                <p class="confidence" style="color: var(--text-light); margin-top: 15px; text-align: left;">
                                     Tips for better results:<br>
                                     • Ensure the face is clearly visible<br>
                                     • Use good lighting<br>
@@ -2228,9 +2318,9 @@
                     } else {
                         resultsDisplay.innerHTML = `
                             <img id="imagePreview" class="image-preview" src="${imageDataURL}" alt="Uploaded image" style="display: block;">
-                            <p class="confidence" style="color: #ff4444;">Error</p>
-                            <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
-                            <p class="confidence" style="color: #ff4444;">${errorMessage}</p>
+                            <p class="confidence" style="color: var(--error);">Error</p>
+                            <div class="age-result" style="color: var(--error);">Failed to predict age</div>
+                            <p class="confidence" style="color: var(--error);">${errorMessage}</p>
                         `;
                         showMessage('Error: ' + errorMessage, 5000);
                     }
@@ -2337,9 +2427,9 @@
                 } catch (error) {
                     console.error('Error predicting age from text:', error);
                     textResultsDisplay.innerHTML = `
-                        <p class="confidence" style="color: #ff4444;">Error</p>
-                        <div class="age-result" style="color: #ff4444;">Failed to predict age</div>
-                        <p class="confidence" style="color: #ff4444;">${error.message}</p>
+                        <p class="confidence" style="color: var(--error);">Error</p>
+                        <div class="age-result" style="color: var(--error);">Failed to predict age</div>
+                        <p class="confidence" style="color: var(--error);">${error.message}</p>
                     `;
                     showMessage('Error: ' + error.message, 5000);
                 }
@@ -2367,8 +2457,5 @@
             window.addEventListener('scroll', checkScroll);
         });
     </script>
-    
-    <!-- Cropper.js JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 </body>
 </html>
