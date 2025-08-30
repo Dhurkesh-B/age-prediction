@@ -1553,6 +1553,9 @@
 
                     <div class="webcam-container">
                         <p class="upload-text">Alternatively, use your camera</p>
+                            <button id="toggleCameraBtn" class="toggle-webcam-btn" style="display:none;">
+                                <i class="fas fa-sync-alt"></i> Switch Camera
+                            </button>
                         <video id="webcamVideo" style="display: none;" autoplay></video>
                         <canvas id="webcamCanvas" style="display: none;"></canvas>
                         <div id="webcam-controls" style="display: none; flex-direction: column; align-items: center; gap: 10px;">
@@ -1710,6 +1713,69 @@
             <p style="margin-top: 10px; font-weight: 600; color: var(--primary);">Developed by Team HUSTLERS</p>
         </footer>
     </div>
+    <script>
+        const webcamBtn = document.getElementById('webcamBtn');
+const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+const webcamVideo = document.getElementById('webcamVideo');
+const webcamContainer = document.getElementById('webcamContainer');
+let videoStream;
+let currentFacingMode = "user"; // "user" = front, "environment" = back
+
+// Helper to get camera stream with facingMode
+async function startWebcam(facingMode = "user") {
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+    }
+    try {
+        videoStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { exact: facingMode } }
+        });
+        webcamVideo.srcObject = videoStream;
+        webcamVideo.style.display = 'block';
+        toggleCameraBtn.style.display = 'inline-block';
+        webcamContainer.style.display = 'block';
+    } catch (err) {
+        // Fallback: try without exact
+        try {
+            videoStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: facingMode }
+            });
+            webcamVideo.srcObject = videoStream;
+            webcamVideo.style.display = 'block';
+            toggleCameraBtn.style.display = 'inline-block';
+            webcamContainer.style.display = 'block';
+        } catch (err2) {
+            console.error("Error accessing webcam: ", err2);
+            alert("Could not access the webcam. Please ensure you have granted permission.");
+        }
+    }
+}
+
+// Open webcam with current facing mode
+if (webcamBtn) {
+    webcamBtn.addEventListener('click', async () => {
+        await startWebcam(currentFacingMode);
+    });
+}
+
+// Toggle camera (front/back)
+if (toggleCameraBtn) {
+    toggleCameraBtn.addEventListener('click', async () => {
+        currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+        await startWebcam(currentFacingMode);
+    });
+}
+
+// Close webcam (if you have a close button, add this logic)
+function closeWebcam() {
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+    }
+    webcamVideo.style.display = 'none';
+    toggleCameraBtn.style.display = 'none';
+    webcamContainer.style.display = 'none';
+}
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script>
