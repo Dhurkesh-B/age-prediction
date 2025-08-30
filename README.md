@@ -149,5 +149,4 @@ This project is licensed under the **MIT License**.
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
-
-Would you like me to create **copy-paste badge** 
+ 
