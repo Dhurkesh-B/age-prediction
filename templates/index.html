@@ -488,22 +488,33 @@
         }
         
         .toggle-webcam-btn {
-            background: var(--primary-light);
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
             color: var(--primary);
-            border: 1px solid var(--border);
-            padding: 10px 25px;
-            font-size: 14px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 0;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
             margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: color 0.2s;
         }
-        
-        .toggle-webcam-btn:hover {
-            background: var(--border);
+        .toggle-webcam-btn:hover,
+        .toggle-webcam-btn:focus {
+            color: var(--accent);
+            background: none;
+            outline: none;
+        }
+        .toggle-webcam-btn i {
+            margin: 0;
+            font-size: 28px;
         }
 
         /* Results Section */
@@ -1554,7 +1565,7 @@
                     <div class="webcam-container">
                         <p class="upload-text">Alternatively, use your camera</p>
                             <button id="toggleCameraBtn" class="toggle-webcam-btn" style="display:none;">
-                                <i class="fas fa-sync-alt"></i> Switch Camera
+                                <i class="fas fa-sync-alt"></i>
                             </button>
                         <video id="webcamVideo" style="display: none;" autoplay></video>
                         <canvas id="webcamCanvas" style="display: none;"></canvas>
@@ -2238,6 +2249,7 @@ function closeWebcam() {
                     webcamVideo.srcObject = stream;
                     webcamVideo.style.display = 'block';
                     webcamControls.style.display = 'flex'; // Show both capture and close buttons
+                   
                     webcamBtn.style.display = 'none';
                     uploadArea.style.display = 'none';
                     resultsDisplay.innerHTML = ''; // Clear previous results
