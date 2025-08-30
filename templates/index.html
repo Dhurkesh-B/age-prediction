@@ -1757,7 +1757,7 @@ async function startWebcam(facingMode = "user") {
             webcamContainer.style.display = 'block';
         } catch (err2) {
             console.error("Error accessing webcam: ", err2);
-            alert("Could not access the webcam. Please ensure you have granted permission.");
+            showMessage("Could not access the webcam. Please ensure you have granted permission.",5000);
         }
     }
 }
