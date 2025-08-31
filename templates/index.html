@@ -36,14 +36,19 @@
             --primary: #6c63ff;
             --primary-light: #3d3b6a;
             --secondary: #ff7d4d;
-            --accent: #4a6cfa;
-            --text: #f1f5f9;
-            --text-light: #a0a8b4;
-            --background: #1e293b;
-            --card-bg: #2d384c;
-            --border: #475569;
-            --success: #53d29a;
-            --error: #ff7373;
+            --accent: #8b7fff;
+            --text: #e0e0e0;
+            --text-light: #b0b0b0;
+            --background: #1a1a2e;
+            --card-bg: #16213e;
+            --border: #2d3748;
+            --success: #4cc9a4;
+            --error: #ff4444;
+        }
+
+        /* Dark theme specific overrides for age info sections */
+        .dark-theme .age-info-text {
+            color: #333 !important;
         }
 
         body {
@@ -2481,15 +2486,15 @@ function closeWebcam() {
                             </div>
                             <div style="margin-bottom: 20px; padding: 15px; background: #e8f5e8; border-radius: 10px;">
                                 <h4 style="color: #2d5a2d; margin-bottom: 10px; font-size: 16px;">✅ Eligibility</h4>
-                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.eligibility || 'Varies by location and circumstances.'}</p>
+                                <p class="age-info-text" style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.eligibility || 'Varies by location and circumstances.'}</p>
                             </div>
                             <div style="margin-bottom: 20px; padding: 15px; background: #ffe8e8; border-radius: 10px;">
                                 <h4 style="color: #8b2635; margin-bottom: 10px; font-size: 16px;">❌ Not Eligible</h4>
-                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.not_eligible || 'Varies by location and circumstances.'}</p>
+                                <p class="age-info-text" style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.not_eligible || 'Varies by location and circumstances.'}</p>
                             </div>
                             <div style="margin-bottom: 20px; padding: 15px; background: #f0f8ff; border-radius: 10px;">
                                 <h4 style="color: #1e3a8a; margin-bottom: 10px; font-size: 16px;">💊 Healthcare Tips</h4>
-                                <p style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.healthcare_tips || 'General wellness tips apply.'}</p>
+                                <p class="age-info-text" style="color: var(--text); line-height: 1.5; font-size: 14px;">${ageInfo.healthcare_tips || 'General wellness tips apply.'}</p>
                             </div>
                         </div>
                     `;
