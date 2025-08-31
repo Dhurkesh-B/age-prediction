@@ -1595,7 +1595,10 @@
                     <button class="back-btn" id="textBackBtn"><i class="fas fa-arrow-left"></i> Back to Options</button>
                     <h2 class="section-title"><i class="fas fa-file-alt"></i> Enter Text for Analysis</h2>
                     <p class="upload-text">Enter text or browse a file below.</p>
-                    <textarea id="textInput" placeholder="Enter your text here... (minimum 50 characters for better accuracy)"></textarea>
+                    <textarea id="textInput" placeholder="Enter your text here... (minimum 20 characters for better accuracy)"></textarea>
+                    <div id="charCounter" style="margin-top: 10px; font-size: 14px; color: var(--text-light); text-align: right;">
+                        <span id="charCount">0</span> characters
+                    </div>
                     <div class="input-controls" style="margin-top: 20px;">
                         <button id="analyzeTextBtn" class="upload-btn">
                             <i class="fas fa-search"></i> Analyze Text
@@ -2416,9 +2419,28 @@ function closeWebcam() {
             const textFileInput = document.getElementById('textFileInput');
             const analyzeTextBtn = document.getElementById('analyzeTextBtn');
             const textResultsDisplay = document.getElementById('textResultsDisplay');
+            const charCount = document.getElementById('charCount');
             
             browseTextBtn.addEventListener('click', () => {
                 textFileInput.click();
+            });
+
+            // Update character counter in real-time
+            function updateCharCounter() {
+                const count = textInput.value.length;
+                charCount.textContent = count;
+                
+                // Change color based on minimum requirement
+                if (count >= 20) {
+                    charCount.style.color = 'var(--success)';
+                } else {
+                    charCount.style.color = 'var(--text-light)';
+                }
+            }
+
+            textInput.addEventListener('input', updateCharCounter);
+            textInput.addEventListener('paste', () => {
+                setTimeout(updateCharCounter, 10); // Small delay to ensure paste content is processed
             });
 
             textFileInput.addEventListener('change', (e) => {
@@ -2427,6 +2449,7 @@ function closeWebcam() {
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         textInput.value = event.target.result;
+                        updateCharCounter(); // Update counter after file load
                     };
                     reader.readAsText(file);
                 }
@@ -2434,10 +2457,10 @@ function closeWebcam() {
 
             analyzeTextBtn.addEventListener('click', () => {
                 const textContent = textInput.value.trim();
-                if (textContent.length > 50) {
+                if (textContent.length >= 20) {
                     predictTextAge(textContent);
                 } else {
-                    showMessage("Please enter at least 50 characters for a more accurate analysis.");
+                    showMessage("Please enter at least 20 characters for analysis.");
                 }
             });
 
